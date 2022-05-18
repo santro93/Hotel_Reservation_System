@@ -7,5 +7,6 @@ public class HotelReservationMain {
 		HotelReservation hotelReservation = new HotelReservation();
 		System.out.println("Hotel List for Regular Customer is :-");
 		hotelReservation.addHotel();
+		hotelReservation.enterDates();
 	}
 }
