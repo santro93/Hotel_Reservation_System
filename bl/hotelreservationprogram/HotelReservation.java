@@ -17,9 +17,9 @@ public class HotelReservation {
 	}
 
 	public void addHotel() {
-		Hotel hotel1 = new Hotel("Lakewood", 110);
-		Hotel hotel2 = new Hotel("Bridgewood", 150);
-		Hotel hotel3 = new Hotel("Ridgewood", 220);
+		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 150, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
 
 		hotelReservationList.put(hotel1.getHotelName(), hotel1);
 		hotelReservationList.put(hotel2.getHotelName(), hotel2);
@@ -41,9 +41,9 @@ public class HotelReservation {
 		DayOfWeek day2 = LocalDate.parse(d2).getDayOfWeek();
 
 		List<Hotel> hotelObjList = hotelReservationList.values().stream()
-				.sorted(Comparator.comparing(Hotel -> Hotel.rate)).collect(Collectors.toList());
+				.sorted(Comparator.comparing(Hotel -> Hotel.weekdayRate)).collect(Collectors.toList());
 		System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Total Rates = $"
-				+ hotelObjList.get(0).getRate() * 2);
-		return (hotelObjList.get(0).getRate() * 2);
+				+ hotelObjList.get(0).getWeekdayRate() * 2);
+		return (hotelObjList.get(0).getWeekdayRate() * 2);
 	}
 }
