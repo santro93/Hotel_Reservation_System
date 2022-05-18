@@ -37,13 +37,40 @@ public class HotelReservation {
 	}
 
 	public int findCheapestHotel(String d1, String d2) {
+		int weekEnds = 0;
 		DayOfWeek day1 = LocalDate.parse(d1).getDayOfWeek();
 		DayOfWeek day2 = LocalDate.parse(d2).getDayOfWeek();
-
-		List<Hotel> hotelObjList = hotelReservationList.values().stream()
-				.sorted(Comparator.comparing(Hotel -> Hotel.weekdayRate)).collect(Collectors.toList());
-		System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Total Rates = $"
-				+ hotelObjList.get(0).getWeekdayRate() * 2);
-		return (hotelObjList.get(0).getWeekdayRate() * 2);
+		if (day1.equals(DayOfWeek.SUNDAY) || day1.equals(DayOfWeek.SATURDAY)) {
+			weekEnds++;
+		}
+		if (day2.equals(DayOfWeek.SUNDAY) || day2.equals(DayOfWeek.SATURDAY)) {
+			weekEnds++;
+		}
+		if (weekEnds == 0) {
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.weekdayRate)).collect(Collectors.toList());
+			System.out.println(hotelObjList.get(0).getHotelName() + ", Total Rates = $"
+					+ hotelObjList.get(0).getWeekdayRate() * 2);
+			return hotelObjList.get(0).getWeekdayRate() * 2;
+		} else if (weekEnds == 2) {
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.weekendRate)).collect(Collectors.toList());
+			System.out.println(hotelObjList.get(0).getHotelName() + ", Total Rates = $"
+					+ hotelObjList.get(0).getWeekendRate() * 2);
+			return hotelObjList.get(0).getWeekendRate() * 2;
+		} else {
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.avgRate)).collect(Collectors.toList());
+			if (hotelObjList.get(0).getAvgRate() == hotelObjList.get(1).getAvgRate()) {
+				System.out.println(hotelObjList.get(0).getHotelName() + " and "
+						+ hotelObjList.get(1).getHotelName() + ", Total Rates = $"
+						+ (hotelObjList.get(0).getAvgRate()));
+				return hotelObjList.get(0).getAvgRate();
+			} else {
+				System.out.println(hotelObjList.get(0).getHotelName() + ", Total Rates = $"
+						+ (hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate()));
+				return hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate();
+			}
+		}
 	}
 }

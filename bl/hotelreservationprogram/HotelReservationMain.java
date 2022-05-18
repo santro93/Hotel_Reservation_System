@@ -7,6 +7,7 @@ public class HotelReservationMain {
 		HotelReservation hotelReservation = new HotelReservation();
 		System.out.println("Hotel List for Regular Customer is :-");
 		hotelReservation.addHotel();
-		hotelReservation.enterDates();
+		System.out.println("Cheapest Hotels for \"2020-09-11\", \"2020-09-12\" date is :-");
+		hotelReservation.findCheapestHotel("2020-09-11", "2020-09-12");
 	}
 }
