@@ -164,4 +164,12 @@ public class HotelReservation {
 			}
 		}
 	}
+	
+	public boolean isDateValid(String d1, String d2) {
+        String regex = "^[0-9]{4}-[0-9]{2}-[0-9]{2}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher1 = pattern.matcher(d1);
+        Matcher matcher2 = pattern.matcher(d2);
+        return matcher1.matches() && matcher2.matches();
+    }
 }
