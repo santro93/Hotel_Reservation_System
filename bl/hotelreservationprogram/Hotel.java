@@ -90,6 +90,6 @@ public class Hotel {
 	public String toString() {
 		return "Hotel [hotelName=" + hotelName + ", rating=" + rating + ", weekdayRate=" + weekdayRate + ", weekendRate=" + weekendRate
 				+ ", avgRate=" + avgRate  + ", specialWeekdayRate=" + specialWeekdayRate
-				+ ", specialWeekendRate=" + specialWeekendRate + ", specialAvgRate=" + specialAvgRate + "]";
+				+ ", specialWeekendRate=" + specialWeekendRate + ", specialAvgRate=" + specialAvgRate + "]\n";
 	}
 }

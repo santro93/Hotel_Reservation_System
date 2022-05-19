@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class HotelReservation {
@@ -33,7 +35,7 @@ public class HotelReservation {
 		System.out.println("Enter the 2 dates in yyyy-mm-dd format: ");
 		String date1 = sc.nextLine();
 		String date2 = sc.nextLine();
-		findCheapestHotel(date1, date2);
+		findCheapestHotelForRewardCustomer(date1, date2);
 	}
 
 	public int findCheapestHotel(String d1, String d2) {
@@ -49,37 +51,38 @@ public class HotelReservation {
 		if (weekEnds == 0) {
 			List<Hotel> hotelObjList = hotelReservationList.values().stream()
 					.sorted(Comparator.comparing(Hotel -> Hotel.weekdayRate)).collect(Collectors.toList());
-			System.out.println(hotelObjList.get(0).getHotelName() + ", Rating:- " + hotelObjList.get(0).getRating()
-					+ ", Total Rates = $" + hotelObjList.get(0).getWeekdayRate() * 2);
+			System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating : "
+					+ hotelObjList.get(0).getRating() + ", Total Rates = $" + hotelObjList.get(0).getWeekdayRate() * 2);
 			return hotelObjList.get(0).getWeekdayRate() * 2;
 		}
 		if (weekEnds == 2) {
 			List<Hotel> hotelObjList = hotelReservationList.values().stream()
 					.sorted(Comparator.comparing(Hotel -> Hotel.weekendRate)).collect(Collectors.toList());
-			System.out.println(hotelObjList.get(0).getHotelName() + ", Rating:- " + hotelObjList.get(0).getRating()
-					+ ", Total Rates = $" + hotelObjList.get(0).getWeekendRate() * 2);
+			System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating : "
+					+ hotelObjList.get(0).getRating() + ", Total Rates = $" + hotelObjList.get(0).getWeekendRate() * 2);
 			return hotelObjList.get(0).getWeekendRate() * 2;
-		}
-		List<Hotel> hotelObjList = hotelReservationList.values().stream()
-				.sorted(Comparator.comparing(Hotel -> Hotel.avgRate)).collect(Collectors.toList());
-		if (hotelObjList.get(0).getAvgRate() == hotelObjList.get(1).getAvgRate()
-				&& hotelObjList.get(0).getRating() < hotelObjList.get(1).getRating()) {
-			System.out.println(hotelObjList.get(1).getHotelName() + ", Rating:- " + hotelObjList.get(1).getRating()
-					+ ", Total Rates = $"
-					+ (hotelObjList.get(1).getWeekdayRate() + hotelObjList.get(1).getWeekendRate()));
-			return hotelObjList.get(1).getAvgRate();
-		}
-		if (hotelObjList.get(0).getAvgRate() == hotelObjList.get(1).getAvgRate()
-				&& hotelObjList.get(0).getRating() > hotelObjList.get(1).getRating()) {
-			System.out.println(hotelObjList.get(0).getHotelName() + ", Rating:- " + hotelObjList.get(0).getRating()
-					+ ", Total Rates = $"
-					+ (hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate()));
-			return hotelObjList.get(0).getAvgRate();
 		} else {
-			System.out.println(hotelObjList.get(0).getHotelName() + ", Rating:- " + hotelObjList.get(0).getRating()
-					+ ", Total Rates = $"
-					+ (hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate()));
-			return hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate();
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.avgRate)).collect(Collectors.toList());
+			if (hotelObjList.get(0).getAvgRate() == hotelObjList.get(1).getAvgRate()
+					&& hotelObjList.get(0).getRating() < hotelObjList.get(1).getRating()) {
+				System.out.println("The cheapest hotel is " + hotelObjList.get(1).getHotelName() + ", Rating "
+						+ hotelObjList.get(1).getRating() + ", Total Rates = $"
+						+ (hotelObjList.get(1).getWeekdayRate() + hotelObjList.get(1).getWeekendRate()));
+				return hotelObjList.get(1).getAvgRate();
+			}
+			if (hotelObjList.get(0).getAvgRate() == hotelObjList.get(1).getAvgRate()
+					&& hotelObjList.get(0).getRating() > hotelObjList.get(1).getRating()) {
+				System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating "
+						+ hotelObjList.get(0).getRating() + ", Total Rates = $"
+						+ (hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate()));
+				return hotelObjList.get(0).getAvgRate();
+			} else {
+				System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating "
+						+ hotelObjList.get(0).getRating() + ", Total Rates = $"
+						+ (hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate()));
+				return hotelObjList.get(0).getWeekdayRate() + hotelObjList.get(0).getWeekendRate();
+			}
 		}
 	}
 
@@ -96,19 +99,69 @@ public class HotelReservation {
 		List<Hotel> hotelObjList = hotelReservationList.values().stream()
 				.sorted(Comparator.comparing(Hotel -> Hotel.rating)).collect(Collectors.toList());
 		if (weekEnds == 0) {
-			System.out.println(hotelObjList.get(2).getHotelName() + ", Rating: " + hotelObjList.get(2).getRating()
-					+ ", Total Rates = $" + hotelObjList.get(2).getWeekdayRate() * 2);
+			System.out.println(" The Best Rated hotel is: " + hotelObjList.get(2).getHotelName() + ", Rating: "
+					+ hotelObjList.get(2).getRating() + ", Total Rates = $" + hotelObjList.get(2).getWeekdayRate() * 2);
 			return hotelObjList.get(2).getWeekdayRate() * 2;
 		}
 		if (weekEnds == 2) {
-			System.out.println(hotelObjList.get(2).getHotelName() + ", Rating: " + hotelObjList.get(2).getRating()
-					+ ", Total Rates = $" + hotelObjList.get(2).getWeekendRate() * 2);
+			System.out.println(" The Best Rated hotel is: " + hotelObjList.get(2).getHotelName() + ", Rating: "
+					+ hotelObjList.get(2).getRating() + ", Total Rates = $" + hotelObjList.get(2).getWeekendRate() * 2);
 			return hotelObjList.get(2).getWeekendRate() * 2;
 		} else {
-			System.out.println(hotelObjList.get(2).getHotelName() + ", Rating: " + hotelObjList.get(2).getRating()
-					+ ", Total Rates = $"
+			System.out.println(" The Best Rated hotel is: " + hotelObjList.get(2).getHotelName() + ", Rating: "
+					+ hotelObjList.get(2).getRating() + ", Total Rates = $"
 					+ (hotelObjList.get(2).getWeekdayRate() + hotelObjList.get(2).getWeekendRate()));
 			return (hotelObjList.get(2).getWeekdayRate() + hotelObjList.get(2).getWeekendRate());
+		}
+	}
+
+	public int findCheapestHotelForRewardCustomer(String d1, String d2) {
+		int weekEnds = 0;
+		DayOfWeek day1 = LocalDate.parse(d1).getDayOfWeek();
+		DayOfWeek day2 = LocalDate.parse(d2).getDayOfWeek();
+		if (day1.equals(DayOfWeek.SUNDAY) || day1.equals(DayOfWeek.SATURDAY)) {
+			weekEnds++;
+		}
+		if (day2.equals(DayOfWeek.SUNDAY) || day2.equals(DayOfWeek.SATURDAY)) {
+			weekEnds++;
+		}
+		if (weekEnds == 0) {
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.specialWeekdayRate)).collect(Collectors.toList());
+			System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating : "
+					+ hotelObjList.get(0).getRating() + ", Total Rates = $"
+					+ hotelObjList.get(0).getSpecialWeekdayRate() * 2);
+			return hotelObjList.get(0).getSpecialWeekdayRate() * 2;
+		}
+		if (weekEnds == 2) {
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.specialWeekendRate)).collect(Collectors.toList());
+			System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating : "
+					+ hotelObjList.get(0).getRating() + ", Total Rates = $"
+					+ hotelObjList.get(0).getSpecialWeekendRate() * 2);
+			return hotelObjList.get(0).getSpecialWeekendRate() * 2;
+		} else {
+			List<Hotel> hotelObjList = hotelReservationList.values().stream()
+					.sorted(Comparator.comparing(Hotel -> Hotel.specialAvgRate)).collect(Collectors.toList());
+			if (hotelObjList.get(0).getSpecialAvgRate() == hotelObjList.get(1).getSpecialAvgRate()
+					&& hotelObjList.get(0).getRating() < hotelObjList.get(1).getRating()) {
+				System.out.println("The cheapest hotel is " + hotelObjList.get(1).getHotelName() + ", Rating "
+						+ hotelObjList.get(1).getRating() + ", Total Rates = $"
+						+ (hotelObjList.get(1).getSpecialWeekdayRate() + hotelObjList.get(1).getSpecialWeekendRate()));
+				return hotelObjList.get(1).getSpecialAvgRate();
+			}
+			if (hotelObjList.get(0).getSpecialAvgRate() == hotelObjList.get(1).getSpecialAvgRate()
+					&& hotelObjList.get(0).getRating() > hotelObjList.get(1).getRating()) {
+				System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating "
+						+ hotelObjList.get(0).getRating() + ", Total Rates = $"
+						+ (hotelObjList.get(0).getSpecialWeekdayRate() + hotelObjList.get(0).getSpecialWeekendRate()));
+				return hotelObjList.get(0).getSpecialAvgRate();
+			} else {
+				System.out.println("The cheapest hotel is " + hotelObjList.get(0).getHotelName() + ", Rating "
+						+ hotelObjList.get(0).getRating() + ", Total Rates = $"
+						+ (hotelObjList.get(0).getSpecialWeekdayRate() + hotelObjList.get(0).getSpecialWeekendRate()));
+				return hotelObjList.get(0).getSpecialWeekdayRate() + hotelObjList.get(0).getSpecialWeekendRate();
+			}
 		}
 	}
 }
