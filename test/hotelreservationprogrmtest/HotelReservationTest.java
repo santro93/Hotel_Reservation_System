@@ -63,4 +63,11 @@ class HotelReservationTest {
 		obj.addHotel();
 		Assert.assertEquals(140, obj.findCheapestHotelForRewardCustomer("2020-09-11", "2020-09-12"));
 	}
+
+	@Test
+	public void givenDateShouldReturnTrueIfDateIsValid() {
+		HotelReservation obj = new HotelReservation();
+		obj.addHotel();
+		Assert.assertTrue(obj.isDateValid("2020-09-11", "2020-09-12"));
+	}
 }
