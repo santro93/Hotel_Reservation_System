@@ -5,9 +5,8 @@ public class HotelReservationMain {
 		System.out.println("Welcome to the Hotel Reservation System");
 
 		HotelReservation hotelReservation = new HotelReservation();
-		System.out.println("Hotel List for Regular Customer is :-");
+		System.out.println("Added special rates in Weekday & "
+				+ "Weekend Rates per day Hotel List is :-");
 		hotelReservation.addHotel();
-		System.out.println("Best Rated Hotel for a given Date Range is :-");
-		hotelReservation.findBestRatedHotel("2020-09-11", "2020-09-12");
 	}
 }
